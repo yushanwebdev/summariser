@@ -1,0 +1,23 @@
+[project]
+name = "summariser"
+version = "0.1.0"
+description = "Scrape a URL with Firecrawl, summarise it with a crewAI crew, then chat with the source."
+requires-python = ">=3.10,<3.14"
+dependencies = [
+    "crewai>=1.15,<2",
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "httpx>=0.27",
+    "python-dotenv>=1.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "pytest-asyncio>=0.24",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+asyncio_mode = "auto"

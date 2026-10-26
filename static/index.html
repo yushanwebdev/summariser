@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Summariser</title>
+    <meta name="description" content="Scrape a URL, summarise it, then chat with the source." />
+    <link rel="stylesheet" href="/static/styles.css" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231f6f5c'/><path d='M9 11h14M9 16h14M9 21h9' stroke='white' stroke-width='2.2' stroke-linecap='round'/></svg>" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="masthead">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <h1>Summariser</h1>
+        </div>
+        <p class="tagline">Paste a URL. Get the gist. Ask it anything.</p>
+      </header>
+
+      <section class="intake" aria-labelledby="intake-label">
+        <label id="intake-label" for="url">Article URL</label>
+        <form id="ingest-form" class="url-row" autocomplete="off">
+          <input
+            id="url"
+            name="url"
+            type="url"
+            inputmode="url"
+            placeholder="https://example.com/interesting-article"
+            required
+            spellcheck="false"
+          />
+          <button id="ingest-btn" type="submit">Summarise</button>
+        </form>
+        <p id="status" class="status" role="status" aria-live="polite"></p>
+        <p id="error" class="error" role="alert" hidden></p>
+        <ul class="pipeline" aria-label="Pipeline">
+          <li><span>1</span>Firecrawl scrape</li>
+          <li><span>2</span>crewAI clean + summarise</li>
+          <li><span>3</span>Chat with the source</li>
+        </ul>
+      </section>
+
+      <section id="result" class="workspace" hidden>
+        <article class="doc">
+          <header class="doc-head">
+            <div>
+              <h2 id="doc-title">Untitled</h2>
+              <a id="doc-link" class="doc-link" target="_blank" rel="noreferrer noopener"></a>
+            </div>
+            <span id="doc-mode" class="badge"></span>
+          </header>
+
+          <div class="tabs" role="tablist" aria-label="Document views">
+            <button id="tab-summary" class="tab is-active" role="tab" aria-selected="true" aria-controls="panel-summary">Summary</button>
+            <button id="tab-source" class="tab" role="tab" aria-selected="false" aria-controls="panel-source">Source</button>
+          </div>
+
+          <div id="panel-summary" class="panel prose" role="tabpanel" aria-labelledby="tab-summary"></div>
+          <div id="panel-source" class="panel source" role="tabpanel" aria-labelledby="tab-source" hidden>
+            <div class="source-meta"><span id="source-size"></span></div>
+            <pre id="source-text"></pre>
+          </div>
+        </article>
+
+        <aside class="chat" aria-labelledby="chat-title">
+          <header class="chat-head">
+            <h2 id="chat-title">Ask the article</h2>
+            <span class="chat-sub">Answers are drawn from the scraped source</span>
+          </header>
+          <div id="messages" class="messages" role="log" aria-live="polite">
+            <div class="empty-chat">
+              <p>Try “What is the main argument?” or “List the numbers mentioned.”</p>
+            </div>
+          </div>
+          <form id="chat-form" class="chat-form" autocomplete="off">
+            <textarea
+              id="chat-input"
+              rows="2"
+              placeholder="Ask a question about the article…"
+              maxlength="2000"
+              required
+            ></textarea>
+            <button id="chat-btn" type="submit" aria-label="Send message">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12l16-8-6 16-3-6-7-2z"/></svg>
+            </button>
+          </form>
+        </aside>
+      </section>
+
+      <footer class="foot">
+        <span>Firecrawl · crewAI · ScaleDown · OpenRouter</span>
+        <span id="model-note"></span>
+      </footer>
+    </div>
+    <script src="/static/app.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,1 @@
+"""Summariser: Firecrawl + crewAI + OpenRouter."""
