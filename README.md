@@ -50,6 +50,21 @@ You need:
 - `GET /api/session/{id}` — reload a session
 - `GET /api/health` — key and model status
 
+## Deploy
+
+Pushing to `main` runs the tests and then deploys with GitHub Actions:
+rsync to `/srv/summariser`, `docker compose up -d --build`, health check on
+`http://localhost:8011/api/health`. Required repository secrets:
+
+- `DEPLOY_HOST` — public IP of the Hetzner box
+- `DEPLOY_USER` — `yushan`
+- `DEPLOY_SSH_KEY` — private deploy key
+- `DEPLOY_KNOWN_HOSTS` — `ssh-keyscan` output for the host
+
+The server keeps its own `.env` (excluded from sync). The container binds to
+loopback and is exposed only inside the tailnet by `tailscale serve` on HTTPS
+port 8443.
+
 ## Notes
 
 Sessions are in-memory, so a restart or a second uvicorn worker loses them. For a real deployment, put the session store in Redis/SQLite and add auth and rate limiting on `/api/ingest` (each call spends Firecrawl and ScaleDown credits).
